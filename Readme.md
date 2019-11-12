@@ -7,5 +7,5 @@ All domain logic is placed in the
 
 ~~~~
 1. composer install
-2. php bib/console game:start playerName
+2. php bin/console game:start playerName
 ~~~~

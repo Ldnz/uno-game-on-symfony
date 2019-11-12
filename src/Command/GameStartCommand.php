@@ -9,7 +9,6 @@ use App\Domain\Actions\Skip;
 use App\Domain\Actions\Take;
 use App\Domain\Ai\AiInterface;
 use App\Domain\Entity\GameState;
-use App\Domain\Entity\Pile;
 use App\Domain\Entity\Player;
 use App\Domain\Game;
 use Symfony\Component\Console\Command\Command;
@@ -97,7 +96,7 @@ class GameStartCommand extends Command
             $winner = $game->checkForWinner();
 
             if (null !== $winner) {
-                // TODO: print winner details
+                $this->printWinnerSummary($winner, $io);
 
                 break;
             }
