@@ -1,6 +1,6 @@
-#### It is just the implementation of UNO game on Symfony framework.
+#### It is just the implementation of the UNO game on the Symfony framework.
 
-All domain logic is placed in
+All domain logic is placed in the
 `src/Domain` folder.
 
 #### How to install and run:
