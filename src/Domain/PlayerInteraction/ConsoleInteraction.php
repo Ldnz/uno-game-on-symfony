@@ -63,7 +63,8 @@ class ConsoleInteraction implements InteractionInterface
             "%s, your turn.\n
             Top card in pile: %s,\n
             Your cards:",
-            $player->getName(), $state->getTopCard()
+            $player->getName(),
+            $state->getTopCard()
         ));
 
         $cards = $player->getCardsOnHands();
@@ -88,7 +89,10 @@ class ConsoleInteraction implements InteractionInterface
             Top card in pile: %s,\n
             Action performed: %s\n
             Number of cards in pile: %s",
-            $player->getName(), $state->getTopCard(), $action->getName(), $state->getTotalCardsOnPile()
+            $player->getName(),
+            $state->getTopCard(),
+            $action->getName(),
+            $state->getTotalCardsOnPile()
         ));
 
         $this->io->writeln("---------------");

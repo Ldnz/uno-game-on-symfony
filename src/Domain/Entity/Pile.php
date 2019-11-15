@@ -3,9 +3,6 @@
 
 namespace App\Domain\Entity;
 
-
-use phpDocumentor\Reflection\Types\This;
-
 class Pile
 {
     /**
@@ -52,5 +49,4 @@ class Pile
     {
         shuffle($this->cards);
     }
-
 }

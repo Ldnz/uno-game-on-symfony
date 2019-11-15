@@ -128,8 +128,7 @@ class Game
     {
         $ai = $this->getConfig()->getAi();
 
-        for ($i = 0; $i < self::BOTS_MAX_AMOUNT; $i++)
-        {
+        for ($i = 0; $i < self::BOTS_MAX_AMOUNT; $i++) {
             $name = sprintf("Bot %s", $i);
 
             array_push($this->bots, PlayerFabric::createBot($this->pile, $name, $ai));

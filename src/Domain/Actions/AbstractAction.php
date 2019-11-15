@@ -41,16 +41,16 @@ abstract class AbstractAction implements ActionInterface
     public static function create(string $type, Player $player, Pile $pile): self
     {
         switch ($type) {
-            case Drop::NAME :
+            case Drop::NAME:
                 $action = Drop::class;
                 break;
-            case  Skip::NAME :
+            case  Skip::NAME:
                 $action = Skip::class;
                 break;
-            case Take::NAME :
+            case Take::NAME:
                 $action = Take::class;
                 break;
-            default :
+            default:
                 throw new UndefinedActionException();
         }
 

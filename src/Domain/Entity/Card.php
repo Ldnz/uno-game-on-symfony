@@ -3,7 +3,6 @@
 
 namespace App\Domain\Entity;
 
-
 class Card
 {
     /**

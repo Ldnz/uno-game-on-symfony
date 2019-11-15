@@ -10,5 +10,4 @@ class Take extends AbstractAction
     {
         $this->player->addCard($this->pile->pop());
     }
-
 }
