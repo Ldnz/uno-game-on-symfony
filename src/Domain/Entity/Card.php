@@ -18,6 +18,14 @@ class Card
 
     public function __toString()
     {
+        return $this->getCode();
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode(): string
+    {
         return sprintf('%s(%s)', $this->getNumber(), $this->getColor());
     }
 

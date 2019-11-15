@@ -9,6 +9,13 @@ interface ActionInterface
 {
     public function __construct(Player $player, Pile $pile);
 
-    public function execute();
-    public function getName();
+    /**
+     * @throws ActionNotPossibleException
+     */
+    public function execute(): void;
+
+    /**
+     * @return string
+     */
+    public function getName(): string ;
 }

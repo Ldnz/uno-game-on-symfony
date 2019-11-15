@@ -3,10 +3,9 @@
 namespace App\Domain\Entity;
 
 use App\Domain\Actions\ActionInterface;
-use App\Domain\Actions\Drop;
-use App\Domain\Actions\Skip;
+use App\Domain\Actions\UndefinedActionException;
 
-class Player
+abstract class Player
 {
     /**
      * @var string
@@ -18,11 +17,6 @@ class Player
     private $cards = [];
 
     /**
-     * @var Card
-     */
-    private $cardForMove;
-
-    /**
      * @param Card $card
      */
     public function addCard(Card $card): void
@@ -31,28 +25,31 @@ class Player
     }
 
     /**
-     * @return Card
+     * @param Card $cardToRemove
      */
-    public function getCardForMove(): Card
+    public function removeCard(Card $cardToRemove): void
     {
-        return $this->cardForMove;
-    }
-
-    /**
-     * @param string $cardCode
-     *
-     * @return void
-     */
-    public function setCardForMove(string $cardCode): void
-    {
-        // not a good solution
         foreach ($this->cards as $i => $card) {
-            if ($cardCode === $card->__toString()) {
-                $this->cardForMove = clone $card;
-
+            if ($cardToRemove->getCode() === $card->getCode()) {
                 unset($this->cards[$i]);
             }
         }
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Card|null
+     */
+    public function getCardByCode(string $code): ?Card
+    {
+        foreach ($this->cards as $card) {
+            if ($card->getCode() === $code) {
+                return $card;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -71,9 +68,20 @@ class Player
         $this->name = $name;
     }
 
+    /**
+     * @return Card[]
+     */
     public function getCardsOnHands()
     {
         return $this->cards;
     }
 
+    /**
+     * @param Pile $pile
+     *
+     * @return ActionInterface
+     *
+     * @throws UndefinedActionException
+     */
+    abstract public function makeTurnDecision(Pile $pile): ActionInterface;
 }

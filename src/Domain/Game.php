@@ -29,13 +29,35 @@ class Game
     private $pile;
 
     /**
-     * @param string $playerName
+     * @var GameConfig
      */
-    public function start(string $playerName): void
+    private $config;
+
+    /**
+     * Game constructor.
+     * @param GameConfig $config
+     */
+    public function __construct(GameConfig $config)
+    {
+        $this->config = $config;
+    }
+
+    /**
+     * @return GameConfig
+     */
+    public function getConfig(): GameConfig
+    {
+        return $this->config;
+    }
+
+    /**
+     * start game
+     */
+    public function start(): void
     {
         $this->initPile();
         $this->initBots();
-        $this->initPlayer($playerName);
+        $this->initPlayer();
     }
 
     public function finish(): void
@@ -48,13 +70,13 @@ class Game
      */
     public function checkForWinner(): ?Player
     {
-        $players = array_merge([$this->getPlayer()], $this->getBots());
+        $players = $this->getPlayers();
 
         /**
          * @var Player $player
          */
         foreach ($players as $player) {
-            if (0 === $player->getCardsOnHands()) {
+            if (0 === count($player->getCardsOnHands())) {
                 return $player;
             }
         }
@@ -68,6 +90,7 @@ class Game
     public function getState(): GameState
     {
         $state = new GameState();
+
         $state->setTotalCardsOnPile($this->pile->getCountOfCards());
         $state->setTopCard($this->pile->getTopCard());
 
@@ -77,9 +100,9 @@ class Game
     /**
      * @return Player[]
      */
-    public function getBots()
+    public function getPlayers()
     {
-        return $this->bots;
+        return array_merge([$this->player], $this->bots);
     }
 
     /**
@@ -88,14 +111,6 @@ class Game
     public function getPile(): Pile
     {
         return $this->pile;
-    }
-
-    /**
-     * @return Player
-     */
-    public function getPlayer(): Player
-    {
-        return $this->player;
     }
 
     /**
@@ -111,19 +126,24 @@ class Game
      */
     private function initBots() : void
     {
+        $ai = $this->getConfig()->getAi();
+
         for ($i = 0; $i < self::BOTS_MAX_AMOUNT; $i++)
         {
-            array_push($this->bots, PlayerFabric::create($this->pile, sprintf("Bot %s", $i)));
+            $name = sprintf("Bot %s", $i);
+
+            array_push($this->bots, PlayerFabric::createBot($this->pile, $name, $ai));
         }
     }
 
     /**
      * initializing a real player
-     *
-     * @param string $playerName
      */
-    private function initPlayer(string $playerName): void
+    private function initPlayer(): void
     {
-        $this->player = PlayerFabric::create($this->pile, $playerName);
+        $name = $this->getConfig()->getPlayerName();
+        $interaction = $this->getConfig()->getInteractionInterface();
+
+        $this->player = PlayerFabric::createReal($this->pile, $name, $interaction);
     }
 }

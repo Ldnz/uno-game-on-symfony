@@ -2,12 +2,46 @@
 
 namespace App\Domain\Actions;
 
-class Drop extends AbstractAction
+use App\Domain\Entity\Card;
+
+class Drop extends AbstractAction implements CardHolderInterface
 {
     public const NAME = 'Drop';
 
-    public function execute()
+    /**
+     * @var Card
+     */
+    private $hold;
+
+    /**
+     * @throws ActionNotPossibleException
+     */
+    public function execute(): void
     {
-        $this->pile->append($this->player->getCardForMove());
+        if (!$this->isPossible()) {
+            throw new ActionNotPossibleException();
+        }
+
+        $this->pile->append($this->hold);
+        $this->player->removeCard($this->hold);
+    }
+
+    /**
+     * @return bool
+     */
+    private function isPossible(): bool
+    {
+        $playerCard = $this->hold;
+        $topCard = $this->pile->getTopCard();
+
+        return $playerCard->getColor() === $topCard->getColor() || $playerCard->getNumber() === $topCard->getNumber();
+    }
+
+    /**
+     * @param Card $card
+     */
+    public function hold(Card $card): void
+    {
+        $this->hold = $card;
     }
 }

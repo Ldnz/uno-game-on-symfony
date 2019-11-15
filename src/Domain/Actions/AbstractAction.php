@@ -7,9 +7,22 @@ use App\Domain\Entity\Player;
 
 abstract class AbstractAction implements ActionInterface
 {
+    /**
+     * @var Player
+     */
     protected $player;
+
+    /**
+     * @var Pile
+     */
     protected $pile;
 
+    /**
+     * AbstractAction constructor.
+     *
+     * @param Player $player
+     * @param Pile $pile
+     */
     public function __construct(Player $player, Pile $pile)
     {
         $this->player = $player;
@@ -23,7 +36,7 @@ abstract class AbstractAction implements ActionInterface
      *
      * @return mixed
      *
-     * @throws \Exception
+     * @throws UndefinedActionException
      */
     public static function create(string $type, Player $player, Pile $pile): self
     {
@@ -38,7 +51,7 @@ abstract class AbstractAction implements ActionInterface
                 $action = Take::class;
                 break;
             default :
-                throw new \Exception('Undefined type of action.');
+                throw new UndefinedActionException();
         }
 
         return new $action($player, $pile);
@@ -51,5 +64,4 @@ abstract class AbstractAction implements ActionInterface
     {
         return static::class;
     }
-
 }
